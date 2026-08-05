@@ -1,0 +1,94 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family:'Courier New', Courier, monospace;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #f1f3c3;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 600px;
+    height: 500px;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    margin-bottom: 15px;
+    text-align: start; 
+}
+
+p {
+    margin-bottom: 20px;
+    text-align: start; 
+    font-size: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"], 
+input[type="password"] {
+    padding: 8px;
+}
+
+.remember {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.forgot-password a {
+    justify-content: space-between;
+    text-decoration: none;
+    color: #a28057;
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 10px;
+}
+
+button {
+    padding: 10px;
+    background-color: #cdbd93;
+    color: rgb(97, 96, 96);
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #a28057;
+    color: white;
+}
+
+.register {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.register a {
+    text-decoration: none;
+    color: #a28057;
+    font-weight: bold;
+}
