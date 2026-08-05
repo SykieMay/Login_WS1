@@ -5,23 +5,27 @@
 
 body {
     font-family:'Courier New', Courier, monospace;
-    background-color: #f4f4f4;
+    /* background-color: #f4f4f4; */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background-image: url('https://static.vecteezy.com/system/resources/thumbnails/004/968/002/small/cute-abstract-modern-background-free-vector.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 .login-container {
     display: flex;
     flex-direction: column;
-    background-color: #f1f3c3;
+    /* background-color: #f1f3c3; */
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 20px 10px 20px 10px rgba(0, 0, 0, 0.1);
     width: 600px;
     height: 500px;
     justify-content: center;
     align-items: center;
+    backdrop-filter: blur(5px);
 }
 
 h1 {
@@ -67,7 +71,7 @@ input[type="password"] {
 button {
     padding: 10px;
     background-color: #cdbd93;
-    color: rgb(97, 96, 96);
+    color: darkolivegreen;
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
