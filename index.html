@@ -10,7 +10,7 @@
     <div class="login-container">
         <h1>Welcome!</h1>
         <p>Please login your account.</p>
-        <form action="dashboard.html" method="POST">
+        <form action="/login" method="POST">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required><br>
             <label for="password">Password:</label>
@@ -20,11 +20,11 @@
                 <label for="remember"> Remember me</label>
             </div>
             <div class="forgot-password">
-                <a href="register.html">Forgot Password?</a>
+                <a href="/register.html">Forgot Password?</a>
             </div>
-            <button type="submit" formaction="dashboard.html">Login</button>
+            <button type="submit" href="/dashboard">Login</button>
             <div class="register">
-                <p>Don't have an account? <a href="register.html">Sign up</a></p>
+                <p>Don't have an account? <a href="/register.html">Sign up</a></p>
             </div>
         </form>
     </div>
