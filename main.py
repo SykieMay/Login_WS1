@@ -2,10 +2,11 @@ import mysql.connector
 
 # 1. Establish the connection
 db_connection = mysql.connector.connect(
-    host="localhost",        # Or your server IP
+    host="127.0.0.1",        # Or your server IP
     user="root",    # Your MySQL username
     password="",# Your MySQL password
-    database="user_account" # The database name
+    database="user_account", # The database name
+    port=3307
 )
 
 # 2. Create a cursor object to execute commands

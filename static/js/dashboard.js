@@ -1,0 +1,1 @@
+document.getElementById("autodate").innerText = new Date().toLocaleDateString();
