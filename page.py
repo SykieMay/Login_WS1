@@ -62,7 +62,7 @@ def create_app():
 
             query = "SELECT * FROM users WHERE email = %s AND password = %s"
             cursor.execute(query, (email, password))
-            user = cursor.fetchone()
+            user = cursor.fetchone()  
             cursor.close()
 
             if user:  

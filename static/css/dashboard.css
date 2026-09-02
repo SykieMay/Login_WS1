@@ -6,17 +6,83 @@
 
 .dashboard-container {
     display: flex;
-    flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
     background-color: #f5f5f5;
+}
+
+.sidebar-container {
+    width: 220px;
+    min-height: 100vh;
+}
+
+.sidebar-container img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+
+}
+
+.sidebar-container p {
+    font-size: 14px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .navbar {
     background-color: #877777;
-    color: #fff;
-    padding: 10px;
-    width: 200px;
-    height: 100vh;
-    align-items: center;
-    justify-content: start;
+    color: white;
+    width: 100%;
+    min-height: 100vh;
+    padding: 25px 20px;
+}
+
+.navbar h1 {
+    margin-bottom: 40px;
+}
+
+.navbar ul {
+    list-style: none;
+}
+
+.navbar li {
+    margin-bottom: 20px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+}
+
+.main-content {
+    flex: 1;
+    padding: 30px;
+}
+
+.welcome-content {
+    margin-bottom: 30px;
+}
+
+.welcome-content h1 {
+    margin-bottom: 10px;
+}
+
+.class {
+    display: flex;
+    gap: 20px;
+}
+
+.today-subject,
+.allsubject {
+    flex: 1;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
 }

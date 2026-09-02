@@ -10,7 +10,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('https://static.vecteezy.com/system/resources/thumbnails/004/968/002/small/cute-abstract-modern-background-free-vector.jpg');
+    background-image: url('/static/img/LOGINBG.webpg');
     background-size: cover;
     background-position: center;
 }
@@ -18,19 +18,28 @@ body {
 .login-container {
     display: flex;
     flex-direction: column;
-    /* background-color: #f1f3c3; */
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 5px;
-    box-shadow: 20px 10px 20px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 600px;
-    height: 500px;
+    height: 600px;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
 }
 
 h1 {
     margin-bottom: 15px;
     text-align: start; 
+    font-family: 'Verdana', Geneva, Tahoma, sans-serif;
 }
 
 p {
@@ -70,7 +79,7 @@ input[type="password"] {
 
 button {
     padding: 10px;
-    background-color: #cdbd93;
+    background-color: #e3c26d;
     color: darkolivegreen;
     border-radius: 5px;
     cursor: pointer;

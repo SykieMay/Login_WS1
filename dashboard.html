@@ -6,24 +6,48 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="static/css/dashboard.css">
 </head>
+
 <body>
-    <div class="sidebar-container">
+<div class="dashboard-container">
+    <aside class="sidebar-container">
         <nav class="navbar">
-            <h1>Dashboard</h1>
+            <div class="logo">
+                <img src="/static/img/logo.webpg" alt="logo">
+                <p>Brightstone College LMS</p>
+            </div>
             <ul>
                 <li><a href="#dashboard">Home</a></li>
                 <li><a href="#courses">Courses</a></li>
                 <li><a href="#grades">Grades</a></li>
-                <li><a href="#setting">Settings</a></li>
-                <a href="/logout">Logout</a>
+                <li><a href="#settings">Settings</a></li>
+                <li><a href="/logout">Logout</a></li>
             </ul>
+        </nav>
+    </aside>
+
+    <div class="main-content">
+        <section class="welcome-content">
+            <h1>Welcome back, ...SYKIE!</h1>
+            <p>Always stay updated in your portal.</p>
+        </section>
+
+        <section class="body-content">
+            <div class="class">
+                <section class="today-subject">
+                    <h2>Incoming Classes:</h2>
+                </section>
+                <section class="allsubject">
+                    <h2>Subjects:</h2>
+                </section>
+            </div>
+        </section>
+        <section id="home">
+            <div> 
+
+            </div>
+        </section>
     </div>
-
-    <section id="home">
-        <div class=""></div>
-    </section>
-    
-    
-
+</div>
 </body>
+
 </html>

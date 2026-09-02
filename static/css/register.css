@@ -10,7 +10,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('https://images.template.net/551374/Airy-Pastel-Background-edit-online.webp');
+    background-image: url('/static/img/REGISTERBG.webpg');
     background-size: cover;
     background-position: center;
 }
@@ -18,14 +18,16 @@ body {
 .register-container {
     display: flex;
     flex-direction: column;
-    /* background-color: #f1f3c3; */
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 5px;
-    box-shadow: 20px 10px 20px 10px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
     width: 800px;
     height: 500px;
     justify-content: center;
     align-items: center;
     backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .register-container h1 {
