@@ -15,8 +15,8 @@
                 <input type="text" id="lastname" name="lastname" required><br>
                 <label for="firstname">First Name:</label><br>
                 <input type="text" id="firstname" name="firstname" required><br>
-                <label for="middleinitial" limit="1">Middle Initial:</label><br>
-                <input type="text" id="middleinitial" name="middleinitial"><br>
+                <label for="middlename">Middle Name:</label><br>
+                <input type="text" id="middlename" name="middlename"><br>
             </div>
             <div class="email-field">
                 <label for="email">Email:</label><br>
@@ -24,9 +24,9 @@
             </div>
             <div class="password-field">
                 <label for="password">Password:</label><br>
-                <input type="password" id="password" name="password" required><br>
+                <input type="password" id="password" name="password" minlength="8" maxlength="20" required><br>
                 <label for="confirm_password">Confirm Password:</label><br>
-                <input type="password" id="confirm_password" name="confirm_password" required><br>
+                <input type="password" id="confirm_password" name="confirm_password" minlength="8" maxlength="20" required><br>
             </div>
             <button type="submit" href="/index.html">Register</button>
             <div class="login">

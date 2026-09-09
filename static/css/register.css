@@ -54,7 +54,7 @@ form {
 
 .name-fields label[for="lastname"], 
 label[for="firstname"], 
-label[for="middleinitial"] {
+label[for="middlename"] {
     display: flex;
     margin-right: 5px;
     font-weight: bold;
@@ -104,7 +104,7 @@ button {
     width: 150px;
     align-self: center;
     padding: 10px;
-    background-color: #cdbd93;
+    background-color: #e3c26d;
     color:darkolivegreen;
     border-radius: 5px;
     margin-top: 10px;

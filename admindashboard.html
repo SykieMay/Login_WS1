@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="static/css/admindashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+<div class="dashboard-container">
+    <aside class="sidebar-container">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="/static/img/logo.webpg" alt="logo">
+                <p>Brightstone College LMS</p>
+                <button id="closegnav">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <ul>
+                <li><a href="#home"><i class="fa-solid fa-house"></i>   Home</a></li>
+                <li><a href="#managestudent"><i class="fa-solid fa-users-gear"></i>  Manage Student</a></li>
+                <li><a href="#manageteacher"><i class="fa-solid fa-users"></i>  Manage Teacher</a></li>
+                <li><a href="#managecourse"><i class="fa-solid fa-book"></i>  Manage Course</a></li>
+                <li><a href="#managegrades"><i class="fa-solid fa-file"></i>  Manage Grades</a></li>
+                <li><a href="#managerecords"><i class="fa-regular fa-file"></i>  Manage Records</a></li>
+                <li><a href="#settings"><i class="fa-regular fa-gear"></i>  Settings</a></li>
+                <li><a href="/logout"><i class="fa-solid fa-sign-out-alt"></i>  Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div id="home" class="main-content">
+        <button id="sidebarToggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="header">
+            <p>Today is: <time id="autodate"></time></p>
+            <div class="profile">
+                <button class="profile-btn" onclick="toggleProfileMenu()">
+                    <i class="fa-solid fa-user"></i>
+                    <span class="profile-name">{{firstname}}</span>
+                    <span class="profile-role"><small>{{role}}</small></span>
+                    <span class="profile-dropdown-icon"><i class="fa-solid fa-caret-down"></i></span>
+                </button>
+                <div class="profile-menu" id="profileMenu">
+                    <div class="profile-header">
+                        <i class="fa-solid fa-user"></i>
+                        <div>
+                            <strong>{{lastname}}, {{firstname}} {{middlename}}</strong>
+                            <small>{{role}}</small>
+                        </div>
+                    </div>     
+                <a href="#profile"><i class="fa-solid fa-user"></i> Profile</a>
+                <a href="#settings"><i class="fa-solid fa-gear"></i> Settings</a><hr>
+                <a href="/logout"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div> 
+        </div> 
+        <section class="welcome-content">
+            <h1>Welcome back, {{firstname}}!</h1>
+            <h2>Role: {{role}}</h2>
+        </section>
+
+        <section class="body-content">
+            <div class="totals">
+                <section class="total-students">
+                    <i class="fa-solid fa-users"></i>
+                    <h2>Total Students <br></h2> 
+                </section>
+                <section class="total-teachers">
+                    <i class="fa-solid fa-users"></i>
+                    <h2>Total Teachers <br></h2>
+                </section>
+                <section class="total-course">
+                    <i class="fa-solid fa-book"></i>
+                    <h2>Total Course <br></h2>
+                </section>
+                <section class="total-grade">
+                    <i class="fa-solid fa-book"></i>
+                    <h2>Total Grades</h2>
+                </section>
+                <section class="total-records">
+                    <i class="fa-solid fa-folder"></i>
+                    <h2>Total Records</h2>
+                </section>
+                <section class="system-status">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <h2>System Status</h2>
+                </section>
+            </div>
+            <div class="quick-actions">
+                <h2>Quick Actions</h2>
+                <div class="quick-content">
+                    <button href="#managestudent" class="add-student">
+                        <h3>Add Student</h3>
+                        <small>Register new student</small>
+                    </button>
+                    <button href="#manageteacher" class="add-teacher">
+                        <h3>Add Teacher</h3>
+                        <small>Register new teacher</small>
+                    </button>
+                    <button href="#managecourse" class="add-course">
+                        <h3>Add Course</h3>
+                        <small>Add new course</small>
+                    </button>
+                    <button href="#managegrades" class="manage-grades">
+                        <h3>Manage Grades</h3>
+                        <small>Update grades</small>
+                    </button>
+                    <button href="#managerecords" class="view-records">
+                        <h3>View Records</h3>
+                        <small>Check student records</small>
+                    </button>
+                    <button href="#settings" class="settings">
+                        <h3>Settings</h3>
+                        <small>System settings</small>
+                    </button>
+                </div>
+            </div>
+        </section>
+        <div class="dashboard">
+            <section id="managestudent" class="managestudent">
+                <h2>Add Student</h2>
+                <form action="/addstudent">
+                    <section class="form-group">
+                        <label for="studentlastname">Last Name</label>
+                        <input type="text" name="studentlastname" id="studentlastname">                        
+                    </section>
+                    <section class="form-group">
+                        <label for="studentfirstname">First Name</label>
+                        <input type="text" name="studentfirstname" id="studentfirstname">  
+                    </section>
+                    <section class="form-group">
+                        <label for="studentmiddlename">Middle Name</label>
+                        <input type="text" name="studentmiddlename" id="studentmiddlename">
+                    </section>
+                    <section class="form-group">
+                        <label for="studentemail">Email</label>
+                        <input type="email" name="studentemail" id="studentemail">
+                    </section>
+                    <section class="form-group">
+                        <label for="studentpass">Password</label>
+                        <input type="password" name="studentpass" id="studentpass">
+                    </section>
+                </form>
+                <button type="submit">Create Account</button>
+            </section>
+            <section id="manageteacher" class="manageteacher">
+                <h2>Add Teacher</h2>
+                <form action="/addteacher">
+                    <section class="form-group">
+                        <label for="teacherlastname">Last Name</label>
+                        <input type="text" name="teacherlastname" id="teacherlastname">                        
+                    </section>
+                    <section class="form-group">
+                        <label for="studentfirstname">First Name</label>
+                        <input type="text" name="studentfirstname" id="studentfirstname">  
+                    </section>
+                    <section class="form-group">
+                        <label for="teachermiddlename">Middle Name</label>
+                        <input type="text" name="teachermiddlename" id="teachermiddlename">
+                    </section>
+                    <section class="form-group">
+                        <label for="teacheremail">Email</label>
+                        <input type="email" name="teacheremail" id="teacheremail">
+                    </section>
+                    <section class="form-group">
+                        <label for="teacherpass">Password</label>
+                        <input type="password" name="teacherpass" id="teacherpass">
+                    </section>
+                </form>
+                <button type="submit">Create Account</button>
+            </section>
+            <section id="managecourse" class="managecourse">
+                <h2>Add Courses</h2>
+                <form action="/addcourse">
+                    <section class="form-group">
+                        <label for="course_code">Course Code</label>
+                        <input type="text" name="course_code" id="course_code">                        
+                    </section>
+                    <section class="form-group">
+                        <label for="course_name">Course Name</label>
+                        <input type="text" name="course_name" id="course_name">  
+                    </section>
+                    <section class="form-group">
+                        <label for="course_desc">Course Description</label>
+                        <input type="text" name="course_desc" id="course_desc">
+                    </section>
+                </form>
+                <button type="submit">Add Course</button>
+            </section>
+            <section id="managerecords" class="managerecords">
+                <h2>Manages Records</h2>
+            </section>
+            <section id="main-settings" class="main-settings">
+                <h2>Settings</h2>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script src="static/js/dashboard.js"></script>
+
+</body>
+
+</html>

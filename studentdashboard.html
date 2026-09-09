@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="static/css/studentdashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+<div class="dashboard-container">
+    <aside class="sidebar-container">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="/static/img/logo.webpg" alt="logo">
+                <p>Brightstone College LMS</p>
+            </div>
+            <ul>
+                <li><a href="#home"><i class="fa-solid fa-house"></i>   Home</a></li>
+                <li><a href="#courses"><i class="fa-solid fa-book"></i>  Courses</a></li>
+                <li><a href="#grades"><i class="fa-solid fa-chart-bar"></i>  Grades</a></li>
+                <li><a href="#schedule"><i class="fa-solid fa-calendar"></i>  Schedule</a></li>
+                <li><a href="#settings"><i class="fa-solid fa-gear"></i>  Settings</a></li>
+                <li><a href="/logout"><i class="fa-solid fa-sign-out-alt"></i>  Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="main-content">
+        <button id="sidebarToggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="header">
+            <p>Today is: <time id="autodate"></time></p>
+            <div class="profile">
+                <button class="profile-btn" onclick="toggleProfileMenu()">
+                    <i class="fa-solid fa-user"></i>
+                    <span class="profile-name"><strong>{{firstname}}</strong></span>
+                    <span class="profile-role"><small>{{role}}</small></span>
+                    <span class="profile-dropdown-icon"><i class="fa-solid fa-caret-down"></i></span>
+                </button>
+                <div class="profile-menu" id="profileMenu">
+                    <div class="profile-header">
+                        <i class="fa-solid fa-user"></i>
+                        <div>
+                            <strong>{{lastname}}, {{firstname}} {{middlename}}</strong>
+                            <small>{{role}}</small>
+                        </div>
+                    </div>     
+                <a href="#profile"><i class="fa-solid fa-user"></i> Profile</a>
+                <a href="#settings"><i class="fa-solid fa-gear"></i> Settings</a><hr>
+                <a href="/logout"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div> 
+        </div> 
+        <section class="welcome-content">
+            <h1>Welcome back, {{firstname}}!</h1>
+            <h2>Role: {{role}}</h2>
+            <p>Always stay updated in your portal.</p>
+        </section>
+
+        <section class="body-content">
+            <div class="class">
+                <section class="today-subject">
+                    <h2>Incoming Classes:</h2>
+                </section>
+                <section class="allsubject">
+                    <h2>Subjects:</h2>
+                </section>
+            </div>
+        </section>
+        <section id="home">
+            <div> 
+
+            </div>
+        </section>
+    </div>
+</div>
+
+<script src="static/js/dashboard.js"></script>
+
+</body>
+
+</html>
