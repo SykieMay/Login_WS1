@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from werkzeug.security import generate_password_hash, check_password_hash
 import mysql.connector
 
 def get_db_connection():
@@ -20,6 +21,44 @@ def create_app():
     def index():
         return render_template('index.html')
 
+    @app.route('/login', methods=['POST', 'GET'])
+    def login():
+        if request.method == 'POST':
+            email = request.form.get('email')
+            password = request.form.get('password')
+
+            db_connection = get_db_connection()
+            cursor = db_connection.cursor(dictionary=True)
+
+            query = "SELECT * FROM users WHERE email = %s AND password = %s"
+            cursor.execute(query, (email, password))
+
+            user = cursor.fetchone()  
+
+            cursor.close()
+            db_connection.close()
+
+            if user:
+                session['user_id'] = user['id'] # type: ignore
+                session['lastname'] = user['lastname'] # type: ignore
+                session['firstname'] = user['firstname'] # type: ignore
+                session['middlename'] = user['middlename'] # type: ignore
+                session['role'] = user['role'] # type: ignore
+
+                if user['role'] == 'Student': # type: ignore
+                    return redirect(url_for('studentdashboard'))
+
+                elif user['role'] == 'Teacher': # type: ignore
+                    return redirect(url_for('teacherdashboard'))
+
+                elif user['role'] == 'Admin': # type: ignore
+                    return redirect(url_for('admindashboard'))
+
+                return redirect(url_for('index'))
+            return "Invalid Pass or username"
+        
+        return render_template('index.html') 
+
     @app.route('/register', methods=['POST', 'GET'])
     @app.route('/register.html', methods=['POST', 'GET'])
     def register():
@@ -31,11 +70,12 @@ def create_app():
             password = request.form.get('password')
 
             if lastname and firstname and middlename and email and password:
+                hashed_password = generate_password_hash(password)
                 db_connection = get_db_connection()
                 cursor = db_connection.cursor()
 
                 query = """INSERT INTO users (lastname, firstname, middlename, email, password, role) VALUES (%s, %s, %s, %s, %s, %s)"""
-                cursor.execute(query, (lastname, firstname, middlename, email, password, 'student'))
+                cursor.execute(query, (lastname, firstname, middlename, email, password, 'Student'))
 
                 db_connection.commit()
                 cursor.close()
@@ -58,7 +98,7 @@ def create_app():
         if 'user_id' not in session:
             return redirect(url_for('index'))
 
-        if session.get('role') != 'student':
+        if session.get('role') != 'Student':
             return redirect(url_for('index'))
 
         return render_template(
@@ -75,7 +115,7 @@ def create_app():
         if 'user_id' not in session:
             return redirect(url_for('index'))
 
-        if session.get('role') != 'teacher':
+        if session.get('role') != 'Teacher':
             return redirect(url_for('index'))
 
         return render_template(
@@ -95,51 +135,56 @@ def create_app():
         if session.get('role') != 'Admin':
             return redirect(url_for('index'))
 
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("SELECT COUNT(*) AS total_students FROM users WHERE role = %s", ('Student',))
+        total_students = cursor.fetchone()['total_students'] # type: ignore
+
+        cursor.execute("SELECT COUNT(*) AS total_teachers FROM users WHERE role = %s", ('Teacher',))
+        total_teachers = cursor.fetchone()['total_teachers'] # type: ignore
+
+        cursor.close()
+        conn.close()
+
         return render_template(
             'admindashboard.html',
             lastname = session.get('lastname'), 
             firstname = session.get('firstname'), 
             middlename = session.get('middlename'), 
             role = session.get('role'),
-            users={'students': {'total': 0}}
+            users={'students': {'total': 0}},
+            total_students = total_students,
+            total_teachers = total_teachers
         )
 
-    @app.route('/login', methods=['POST', 'GET'])
-    def login():
+    @app.route('/adduser', methods=['POST'])
+    def add_user():
         if request.method == 'POST':
+            lastname = request.form.get('lastname')
+            firstname = request.form.get('firstname')
+            middlename = request.form.get('middlename')
             email = request.form.get('email')
             password = request.form.get('password')
+            role = request.form.get('role')
 
-            db_connection = get_db_connection()
-            cursor = db_connection.cursor(dictionary=True)
+            if lastname and firstname and middlename and email and password and role:
+                hashed_password = generate_password_hash(password)
+                db_connection = get_db_connection()
+                cursor = db_connection.cursor()
 
-            query = "SELECT * FROM users WHERE email = %s AND password = %s"
-            cursor.execute(query, (email, password))
+                query = """INSERT INTO users (lastname, firstname, middlename, email, password, role) VALUES (%s, %s, %s, %s, %s, %s)"""
+                cursor.execute(query, (lastname, firstname, middlename, email, password, role))
 
-            user = cursor.fetchone()  
+                db_connection.commit()
+                cursor.close()
+                db_connection.close()
 
-            cursor.close()
-            db_connection.close()
-
-            if user:  
-                session['user_id'] = user['id']
-                session['lastname'] = user['lastname']
-                session['firstname'] = user['firstname']
-                session['middlename'] = user['middlename']
-                session['role'] = user['role']
-
-            if user['role'] == 'student':
-                return redirect(url_for('studentdashboard'))
-
-            elif user['role'] == 'teacher':
-                return redirect(url_for('teacherdashboard'))
-
-            elif user['role'] == 'Admin':
                 return redirect(url_for('admindashboard'))
 
-            return redirect(url_for('index'))
-        
-        return render_template('index.html') 
+            return "Please fill in all fields."
+
+        return render_template('admindashboard.html')      
 
     return app
 

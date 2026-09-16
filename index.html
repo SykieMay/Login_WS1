@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="static/css/login.css">
-</head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"></head>
 <body>
     <div class="login-container" >
         <section class="class logo">
@@ -17,7 +17,10 @@
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required><br>
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br>
+            <div class="password-container">
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <i class="fa-solid fa-eye toggle-password" id="eye"></i><br>
+            </div>
             <div class="remember">
                 <input type="checkbox" id="remember" name="remember">
                 <label for="remember"> Remember me</label>
@@ -31,5 +34,6 @@
             </div>
         </form>
     </div>
+    <script src="/static/js/login.js"></script>
 </body>
 </html>
