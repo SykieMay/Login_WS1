@@ -1,14 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Flask, render_template, request, redirect, url_for, session
 import mysql.connector
+import os
 
 def get_db_connection():
     return mysql.connector.connect(
-        host="127.0.0.1",        # Or your server IP
-        user="root",    # Your MySQL username
-        password="",# Your MySQL password
-        database="user_account", # The database name
-        port=3307
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME"),
+        port=int(os.getenv("DB_PORT", "3306")),
+        ssl_ca="/etc/secrets/ca.pem"
     )
 
 def create_app():
@@ -70,7 +71,6 @@ def create_app():
             password = request.form.get('password')
 
             if lastname and firstname and middlename and email and password:
-                hashed_password = generate_password_hash(password)
                 db_connection = get_db_connection()
                 cursor = db_connection.cursor()
 
@@ -169,7 +169,6 @@ def create_app():
             role = request.form.get('role')
 
             if lastname and firstname and middlename and email and password and role:
-                hashed_password = generate_password_hash(password)
                 db_connection = get_db_connection()
                 cursor = db_connection.cursor()
 
@@ -189,11 +188,10 @@ def create_app():
     return app
 
 
-def main():
-    app = create_app()
-    app.run(debug=True)
+app = create_app()
+
 
 if __name__ == '__main__':
-    main()
+    app.run(debug=True)
 
  

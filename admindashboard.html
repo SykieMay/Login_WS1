@@ -7,44 +7,80 @@
     <link rel="stylesheet" href="static/css/admindashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
-
 <body>
 <div class="dashboard-container">
     <aside class="sidebar-container">
         <nav class="navbar">
+            <button id="closenav" type="button">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
             <div class="logo">
                 <img src="/static/img/logo.webpg" alt="logo">
                 <p>Brightstone College LMS</p>
             </div>
             <ul>
-                <li><a href="#home"><i class="fa-solid fa-house"></i>   Home</a></li>
-                <li><a href="#manageuser"><i class="fa-solid fa-users-gear"></i>  Manage User</a></li>
-                <li><a href="/logout"><i class="fa-solid fa-sign-out-alt"></i>  Logout</a></li>
+                <li>
+                    <a href="#home">
+                        <i class="fa-solid fa-house"></i>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="#manageuser">
+                        <i class="fa-solid fa-users-gear"></i>
+                        Manage User
+                    </a>
+                </li>
+                <li>
+                    <a href="/logout">
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
             </ul>
         </nav>
     </aside>
 
     <div id="home" class="main-content">
-
         <div class="header">
-            <p>Today is: <time id="autodate"></time></p>
-        </div> 
-        <section class="welcome-content">
-            <h1>Welcome back, {{firstname}}!</h1>
-            <h2>Role: {{role}}</h2>
-        </section>
+            <button id="sidebarToggle" type="button">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <p>
+                Today is:
+                <time id="autodate"></time>
+            </p>
+        </div>
 
+        <section class="welcome-content">
+            <h1>
+                Welcome back, {{ firstname }}!
+            </h1>
+            <h2>
+                Role: {{ role }}
+            </h2>
+        </section>
         <section class="body-content">
             <div class="totals">
                 <section class="total-students">
                     <i class="fa-solid fa-users"></i>
-                    <h2>Total Students <br></h2> 
-                    <h3>{{ total_students }}</h3>
+                    <h2>
+                        Total Students
+                        <br>
+                    </h2>
+                    <h3>
+                        {{ total_students }}
+                    </h3>
                 </section>
                 <section class="total-teachers">
                     <i class="fa-solid fa-users"></i>
-                    <h2>Total Teachers <br></h2> 
-                    <h3>{{ total_teachers }}</h3>
+                    <h2>
+                        Total Teachers
+                        <br>
+                    </h2>
+                    <h3>
+                        {{ total_teachers }}
+                    </h3>
                 </section>
             </div>
         </section>
@@ -53,40 +89,95 @@
                 <h2>Add Users</h2>
                 <form action="/adduser" class="form" method="POST">
                     <section class="form-group">
-                        <label for="lastname">Last Name:</label>
-                        <input type="text" name="lastname" id="lastname" required>                        
+                        <label for="lastname">
+                            Last Name:
+                        </label>
+                        <input
+                            type="text"
+                            name="lastname"
+                            id="lastname"
+                            required
+                        >
                     </section>
                     <section class="form-group">
-                        <label for="firstname">First Name:</label>
-                        <input type="text" name="firstname" id="firstname" required>  
+                        <label for="firstname">
+                            First Name:
+                        </label>
+
+                        <input
+                            type="text"
+                            name="firstname"
+                            id="firstname"
+                            required
+                        >
                     </section>
                     <section class="form-group">
-                        <label for="middlename">Middle Name:</label>
-                        <input type="text" name="middlename" id="middlename" required>
+
+                        <label for="middlename">
+                            Middle Name:
+                        </label>
+
+                        <input
+                            type="text"
+                            name="middlename"
+                            id="middlename"
+                            required
+                        >
                     </section>
                     <section class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" name="email" id="email" required>
+                        <label for="email">
+                            Email:
+                        </label>
+
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            required
+                        >
                     </section>
                     <section class="form-group">
-                        <label for="password">Password:</label>
-                        <input type="password" name="password" id="password" required>
+
+                        <label for="password">
+                            Password:
+                        </label>
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            required
+                        >
                     </section>
                     <section class="role">
-                        <label for="role">Role:</label>
-                        <select name="role" id="role" required>
-                            <option value="" disabled selected>Select Role</option>
-                            <option value="Student">Student</option>
-                            <option value="Teacher">Teacher</option>
+                        <label for="role">
+                            Role:
+                        </label>
+                        <select
+                            name="role"
+                            id="role"
+                            required
+                        >
+                            <option value="" disabled selected>
+                                Select Role
+                            </option>
+
+                            <option value="Student">
+                                Student
+                            </option>
+                            <option value="Teacher">
+                                Teacher
+                            </option>
                         </select>
                     </section>
-                    <button type="submit">Create Account</button>
+                    <button type="submit">
+                        Create Account
+                    </button>
                 </form>
             </section>
-            
         </div>
     </div>
 </div>
+
 
 <script src="static/js/admindashboard.js"></script>
 
