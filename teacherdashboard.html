@@ -11,18 +11,25 @@
 <div class="dashboard-container">
     <aside class="sidebar-container">
         <nav class="navbar">
+            <button id="closenav" type="button">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
             <div class="logo">
                 <img src="/static/img/logo.webpg" alt="logo">
                 <p>Brightstone College LMS</p>
             </div>
             <ul>
                 <li><a href="#home"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="#managestudent"><i class="fa-solid fa-users-gear"></i> Manage Students</a></li>
                 <li><a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             </ul>
         </nav>
     </aside>
     <main id="home" class="main-content">
         <div class="header">
+            <button id="sidebarToggle" type="button">
+                <i class="fa-solid fa-bars"></i>
+            </button>
             <p>Today is: <time id="autodate"></time></p>
         </div>
         <section class="welcome-content">
@@ -30,7 +37,72 @@
             <h2>Role: {{role}}</h2>
         </section>
     </main>
+    <div class="dashboard">
+        <section id="managestudent" class="managestudent">
+            <h2>Add Students</h2>
+            <form action="/addstudent" class="form" method="POST">
+                <section class="form-group">
+                    <label for="lastname">
+                        Last Name:
+                    </label>
+                    <input
+                        type="text"
+                        name="lastname"
+                        id="lastname"
+                        required
+                    >
+                </section>
+                <section class="form-group">
+                    <label for="firstname">
+                        First Name:
+                    </label>
+                    <input
+                        type="text"
+                        name="firstname"
+                        id="firstname"
+                        required
+                    >
+                </section>
+                <section class="form-group">
+                    <label for="middlename">
+                        Middle Name:
+                    </label>
+                    <input
+                        type="text"
+                        name="middlename"
+                        id="middlename"
+                        required
+                    >
+                </section>
+                <section class="form-group">
+                    <label for="email">
+                        Email:
+                    </label>
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        required
+                    >
+                </section>
+                <section class="form-group">
+                    <label for="password">
+                        Password:
+                    </label>
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        required
+                    >
+                </section>      
+                <button type="submit">
+                    Create Account
+                </button>        
+            </form>
+        </section>
+    </div>
 </div>
-<script src="static/js/admindashboard.js"></script>
+<script src="static/js/teacherdashboard.js"></script>
 </body>
 </html>
