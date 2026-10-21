@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/teacherdashboard.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+    <aside id="sidebar-container">
+        <div class="side-profile">
+            <div class="profile">
+                <img src="{{ url_for('static', filename='img/logo.webpg') }}" alt="Brightstone College Logo">
+                <h3>{{ user.lastname }}, {{ user.firstname }}</h3>
+                <p>Teacher</p>
+            </div>
+        </div>
+
+        <nav class="navbar">
+            <ul>
+                <li class="active"><a href="#overview"><i class="fa-solid fa-chart-line"></i> Overview</a></li>
+                <li><a href="#Attendance"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+                <li><a href="#gradebook"><i class="fa-solid fa-book"></i> Gradebook</a></li>
+                <li><a href="#assignment"><i class="fa-solid fa-list-check"></i> Assignments</a></li>
+                <li><a href="#lesson-plans"><i class="fa-solid fa-chalkboard"></i> Lesson Plans</a></li>
+                <li><a href="{{ url_for('logout') }}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+    {% with messages = get_flashed_messages() %}
+    {% for message in messages %}
+        <p class="flash-message">{{ message }}</p>
+    {% endfor %}
+    {% endwith %}
+    <main id="dashboard-container">
+        <button id="sidebarToggle" type="button" aria-label="Toggle sidebar">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <header class="date-role" id="overview">
+            <p>Today is: <time id="autodate"></time></p>
+            <h2>Teacher Dashboard</h2>
+        </header>
+
+        <section id="welcome">
+            <h2>Welcome, {{ user.firstname }}!</h2>
+            <p>Here is your teaching overview.</p>
+        </section>
+
+        <section id="overall-total">
+            <section>
+                <i class="fa-solid fa-user-graduate"></i>
+                <h3>Students</h3>
+                <p>{{ total_students|default(0) }}</p>
+            </section>
+
+            <section>
+                <i class="fa-solid fa-calendar-day"></i>
+                <h3>Classes Today</h3>
+                <p>{{ classes_today|default(0) }}</p>
+            </section>
+
+            <section>
+                <i class="fa-solid fa-user-xmark"></i>
+                <h3>Absent Today</h3>
+                <p>{{ absent_today|default(0) }}</p>
+            </section>
+
+            <section>
+                <i class="fa-solid fa-clipboard-check"></i>
+                <h3>Assignments to Grade</h3>
+                <p>{{ assignments_to_grade|default(0) }}</p>
+            </section>
+        </section>
+
+        <section id="class-overview">
+            <div class="schedule">
+                <h3><i class="fa-solid fa-calendar-days"></i> My Schedule</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Section</th>
+                                <th>Day</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in teacher_schedule|default([]) %}
+                            <tr>
+                                <td>{{ item.subject }}</td>
+                                <td>{{ item.section }}</td>
+                                <td>{{ item.day }}</td>
+                                <td>{{ item.period_time }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4">No schedule available.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="student-rank">
+                <h3><i class="fa-solid fa-users"></i> My Students</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Section</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in teacher_students|default([]) %}
+                            <tr>
+                                <td>{{ student.lastname }}, {{ student.firstname }}</td>
+                                <td>{{ student.section }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="2">No students found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="Attendance">
+            <h3><i class="fa-solid fa-calendar-check"></i> Attendance</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in attendance_records|default([]) %}
+                        <tr>
+                            <td>{{ record.lastname }}, {{ record.firstname }}</td>
+                            <td>{{ record.subject }}</td>
+                            <td>{{ record.date }}</td>
+                            <td>{{ record.status }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4">No attendance records available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="gradebook">
+            <h3><i class="fa-solid fa-book"></i> Gradebook</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Subject</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for grade in gradebook|default([]) %}
+                        <tr>
+                            <td>{{ grade.lastname }}, {{ grade.firstname }}</td>
+                            <td>{{ grade.subject }}</td>
+                            <td>{{ grade.grade }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="3">No grades available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="assignment">
+            <h3><i class="fa-solid fa-list-check"></i> Assignments</h3>
+
+            <button type="button" class="add-button" onclick="toggleForm('assignment-form')">
+                <i class="fa-solid fa-plus"></i> Add Assignment
+            </button>
+
+            <form id="assignment-form" class="feature-form" action="{{ url_for('add_assignment') }}" method="POST" hidden>
+                <label for="assignment-title">Assignment Title</label>
+                <input type="text" id="assignment-title" name="title" required>
+
+                <label for="assignment-subject">Subject</label>
+                <input type="text" id="assignment-subject" name="subject" required>
+
+                <label for="assignment-description">Instructions</label>
+                <textarea id="assignment-description" name="description" rows="4" required></textarea>
+
+                <label for="assignment-due-date">Due Date</label>
+                <input type="date" id="assignment-due-date" name="due_date" required>
+
+                <button type="submit" class="add-button">Save Assignment</button>
+                <button type="button" class="cancel-button" onclick="toggleForm('assignment-form')">Cancel</button>
+            </form>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Assignment</th>
+                            <th>Subject</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for assignment in teacher_assignments|default([]) %}
+                        <tr>
+                            <td>{{ assignment.title }}</td>
+                            <td>{{ assignment.subject }}</td>
+                            <td>{{ assignment.due_date }}</td>
+                            <td>{{ assignment.status }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4">No assignments available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+       <section id="lesson-plans">
+            <h3><i class="fa-solid fa-chalkboard"></i> Lesson Plans</h3>
+
+            <button type="button" class="add-button" onclick="toggleForm('lesson-plan-form')">
+                <i class="fa-solid fa-plus"></i> Add Lesson Plan
+            </button>
+
+            <form id="lesson-plan-form" class="feature-form" action="{{ url_for('add_lesson_plan') }}" method="POST" hidden>
+                <label for="lesson-subject">Subject</label>
+                <input type="text" id="lesson-subject" name="subject" required>
+
+                <label for="lesson-title">Lesson Title</label>
+                <input type="text" id="lesson-title" name="title" required>
+
+                <label for="lesson-objectives">Learning Objectives</label>
+                <textarea id="lesson-objectives" name="objectives" rows="3" required></textarea>
+
+                <label for="lesson-content">Lesson Content / Activities</label>
+                <textarea id="lesson-content" name="content" rows="5" required></textarea>
+
+                <label for="lesson-date">Lesson Date</label>
+                <input type="date" id="lesson-date" name="lesson_date" required>
+
+                <button type="submit" class="add-button">Save Lesson Plan</button>
+                <button type="button" class="cancel-button" onclick="toggleForm('lesson-plan-form')">Cancel</button>
+            </form>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Lesson Plan</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for lesson in lesson_plans|default([]) %}
+                        <tr>
+                            <td>{{ lesson.subject }}</td>
+                            <td>{{ lesson.title }}</td>
+                            <td>{{ lesson.lesson_date }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="3">No lesson plans available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/teacherdashboard.js') }}"></script>
+</body>
+</html>

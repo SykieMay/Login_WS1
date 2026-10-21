@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/studentdashboard.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+    <aside id="sidebar-container">
+        <section class="side-profile">
+            <div class="profile">
+                <img src="{{ url_for('static', filename='img/logo.webpg') }}" alt="Brightstone College Logo">
+                <h3>{{ user.lastname }}, {{ user.firstname }}</h3>
+                <p>Student</p>
+            </div>
+        </section>
+
+        <nav class="navbar">
+            <ul class="nav">
+                <li class="active"><a href="#today"><i class="fa-solid fa-house"></i> Today</a></li>
+                <li><a href="#grades"><i class="fa-solid fa-graduation-cap"></i> Grades</a></li>
+                <li><a href="#attendance"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+                <li><a href="#materials"><i class="fa-solid fa-book-open"></i> Materials</a></li>
+                <li><a href="{{ url_for('logout') }}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main id="dashboard-container">
+        <button id="sidebarToggle" type="button" aria-label="Toggle sidebar" aria-expanded="false">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <header class="date-role" id="today">
+            <p>Today is: <time id="autodate"></time></p>
+            <h2>Student Dashboard</h2>
+        </header>
+
+        <section id="welcome">
+            <h2>Welcome, {{ user.firstname }}!</h2>
+            <p>Here is your academic overview.</p>
+        </section>
+
+        <section id="overall-total">
+            <article><i class="fa-solid fa-calendar-day"></i><h3>Classes Today</h3><p>{{ classes_today|default(0) }}</p></article>
+            <article><i class="fa-solid fa-chart-column"></i><h3>Average Grade</h3><p>{{ average_grade|default('N/A') }}</p></article>
+            <article><i class="fa-solid fa-calendar-check"></i><h3>Attendance</h3><p>{{ attendance_rate|default('N/A') }}</p></article>
+            <article><i class="fa-solid fa-book-open"></i><h3>New Materials</h3><p>{{ new_materials|default(0) }}</p></article>
+        </section>
+
+        <section id="classes-overview" class="dashboard-card">
+            <h3><i class="fa-solid fa-calendar-days"></i> My Schedule</h3>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Subject</th><th>Section</th><th>Day</th><th>Time</th></tr></thead>
+                    <tbody>
+                        {% for item in student_schedule|default([]) %}
+                        <tr>
+                            <td>{{ item.subject }}</td>
+                            <td>{{ item.section }}</td>
+                            <td>{{ item.day }}</td>
+                            <td>{{ item.period_time }}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="4">No schedule available.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="grades" class="dashboard-card">
+            <h3><i class="fa-solid fa-graduation-cap"></i> My Grades</h3>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Subject</th><th>Grade</th></tr></thead>
+                    <tbody>
+                        {% for grade in student_grades|default([]) %}
+                        <tr><td>{{ grade.subject }}</td><td>{{ grade.grade }}</td></tr>
+                        {% else %}
+                        <tr><td colspan="2">No grades available.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="attendance" class="dashboard-card">
+            <h3><i class="fa-solid fa-calendar-check"></i> My Attendance</h3>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Subject</th><th>Date</th><th>Status</th></tr></thead>
+                    <tbody>
+                        {% for record in student_attendance|default([]) %}
+                        <tr><td>{{ record.subject }}</td><td>{{ record.date }}</td><td>{{ record.status }}</td></tr>
+                        {% else %}
+                        <tr><td colspan="3">No attendance records available.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="materials" class="dashboard-card">
+            <h3><i class="fa-solid fa-book-open"></i> Learning Materials</h3>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Title</th><th>Subject</th><th>Description</th></tr></thead>
+                    <tbody>
+                        {% for material in learning_materials|default([]) %}
+                        <tr><td>{{ material.title }}</td><td>{{ material.subject }}</td><td>{{ material.description }}</td></tr>
+                        {% else %}
+                        <tr><td colspan="3">No learning materials available.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="{{ url_for('static', filename='js/studentdashboard.js') }}"></script>
+</body>
+</html>
