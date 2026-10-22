@@ -16,7 +16,7 @@ HASH_PREFIXES = ("pbkdf2:", "scrypt:")
 # Database
 # ----------------------------------------------------------------
 
-load_dotenv(override=True)
+load_dotenv()
 def get_db_connection():
     ssl_ca = os.getenv(
         "DB_SSL_CA",
