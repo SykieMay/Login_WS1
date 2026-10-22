@@ -337,16 +337,25 @@ def create_app():
             cur.execute("SELECT COUNT(*) AS n FROM users WHERE role = 'Student'")
             total_students = cur.fetchone()['n']  # type: ignore
             cur.execute("SELECT COUNT(*) AS n FROM users WHERE role = 'Teacher'")
-            total_teachers = cur.fetchone()['n']  # type: ignore
+            total_teachers = cur.fetchone()['n']  # type: ignor
             cur.execute(
-                """SELECT a.created_at,
-                          COALESCE(CONCAT(u.lastname, ', ', u.firstname), 'Unknown') AS username,
-                          a.action
-                   FROM audit_logs a
-                   LEFT JOIN users u ON u.id = a.user_id
-                   ORDER BY a.created_at DESC
-                   LIMIT 50"""
+                """
+                SELECT
+                    a.id,
+                    a.created_at,
+                    COALESCE(
+                        CONCAT(u.lastname, ', ', u.firstname),
+                        'Unknown'
+                    ) AS username,
+                    a.action
+                FROM audit_logs AS a
+                LEFT JOIN users AS u ON u.id = a.user_id
+                ORDER BY a.created_at DESC, a.id DESC
+                LIMIT 50
+                """
             )
+            audit_logs = cur.fetchall()
+
             audit_logs = cur.fetchall()
 
         return render_template(
