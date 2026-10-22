@@ -356,8 +356,6 @@ def create_app():
             )
             audit_logs = cur.fetchall()
 
-            audit_logs = cur.fetchall()
-
         return render_template(
             'admindashboard.html',
             total_students=total_students,
