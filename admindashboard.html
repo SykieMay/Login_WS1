@@ -25,7 +25,6 @@
               <ul class="nav">
                   <li><a href="#overview"><i class="fas fa-chart-line"></i> Overview</a></li>
                   <li><a href="#manage-user"><i class="fas fa-users"></i> Users</a></li>
-                  <li><a href="#academic-setup"><i class="fas fa-book"></i> Academic Setup</a></li>
                   <li><a href="#audit-logs"><i class="fas fa-clipboard-list"></i> Audit Logs</a></li>
                   <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
               </ul>
@@ -86,55 +85,6 @@
               </select>
               <button type="submit">Add User</button>
           </form>
-        </div>
-        <div id="academic-setup">
-            <h3>Academic Setup</h3>
-
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Program</th>
-                            <th>Year Level</th>
-                            <th>Section</th>
-                            <th>Professor</th>
-                            <th>Total Students</th>
-                            <th>Period Time</th>
-                            <th>Monday Subject</th>
-                            <th>Tuesday Subject</th>
-                            <th>Wednesday Subject</th>
-                            <th>Thursday Subject</th>
-                            <th>Friday Subject</th>
-                            <th>Saturday Subject</th>
-                            <th>Sunday Subject</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {% for row in academic_setup %}
-                        <tr>
-                            <td>{{ row.program }}</td>
-                            <td>{{ row.year_level }}</td>
-                            <td>{{ row.section }}</td>
-                            <td>{{ row.professor }}</td>
-                            <td>{{ row.total_students }}</td>
-                            <td>{{ row.period_time }}</td>
-                            <td>{{ row.monday_subject }}</td>
-                            <td>{{ row.tuesday_subject }}</td>
-                            <td>{{ row.wednesday_subject }}</td>
-                            <td>{{ row.thursday_subject }}</td>
-                            <td>{{ row.friday_subject }}</td>
-                            <td>{{ row.saturday_subject }}</td>
-                            <td>{{ row.sunday_subject }}</td>
-                        </tr>
-                        {% else %}
-                        <tr>
-                            <td colspan="13">No academic setup records found.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
         </div>
         <div id="audit-logs">
             <h3>Audit Logs</h3>
