@@ -56,16 +56,21 @@ def get_cursor(commit=False):
         conn.close()
 
 
+
 def log_action(user_id, action):
-    """Write a row to audit_logs (never breaks the request if it fails)."""
+    """Write an audit log and report database failures in Render logs."""
     try:
         with get_cursor(commit=True) as cur:
             cur.execute(
-                "INSERT INTO audit_logs (user_id, action) VALUES (%s, %s)",
+                """
+                INSERT INTO audit_logs (user_id, action, created_at)
+                VALUES (%s, %s, CURRENT_TIMESTAMP)
+                """,
                 (user_id, action),
             )
-    except mysql.connector.Error:
-        pass
+    except Exception:
+        app.logger.exception("Failed to insert audit log: %s", action)
+
 
 
 def verify_password(stored, supplied):
