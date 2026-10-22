@@ -342,7 +342,7 @@ def create_app():
             cur.execute("SELECT COUNT(*) AS n FROM users WHERE role = 'Student'")
             total_students = cur.fetchone()['n']  # type: ignore
             cur.execute("SELECT COUNT(*) AS n FROM users WHERE role = 'Teacher'")
-            total_teachers = cur.fetchone()['n']  # type: ignor
+            total_teachers = cur.fetchone()['n']  # type: ignore
             cur.execute(
                 """
                 SELECT
