@@ -414,6 +414,8 @@ a:focus-visible {
         align-items: center;
         justify-content: center;
         margin-bottom: 20px;
+        position: relative;
+        z-index: 1001;
     }
 
     #sidebar-container {

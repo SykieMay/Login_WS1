@@ -25,16 +25,30 @@ document.querySelectorAll(".subject-teacher-form").forEach(form => {
     filterTeachers(form.querySelector('select[name="teacher_id"]'), form.dataset.programId);
 });
 
-const dashboard = document.querySelector(".dashboard-container");
 const sidebarToggle = document.getElementById("sidebarToggle");
-const closeNav = document.getElementById("closenav");
 
-if (dashboard && sidebarToggle && closeNav) {
+function setSidebarOpen(isOpen) {
+    document.body.classList.toggle("sidebar-open", isOpen);
+    if (sidebarToggle) {
+        sidebarToggle.setAttribute("aria-expanded", String(isOpen));
+        const icon = sidebarToggle.querySelector("i");
+        if (icon) {
+            icon.classList.toggle("fa-bars", !isOpen);
+            icon.classList.toggle("fa-times", isOpen);
+        }
+    }
+}
+
+if (sidebarToggle) {
     sidebarToggle.addEventListener("click", function () {
-        dashboard.classList.add("sidebar-open");
-    });
-
-    closeNav.addEventListener("click", function () {
-        dashboard.classList.remove("sidebar-open");
+        setSidebarOpen(!document.body.classList.contains("sidebar-open"));
     });
 }
+
+document.querySelectorAll("#sidebar-container .navbar a").forEach(link => {
+    link.addEventListener("click", () => setSidebarOpen(false));
+});
+
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape") setSidebarOpen(false);
+});

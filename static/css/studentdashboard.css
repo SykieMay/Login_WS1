@@ -244,6 +244,8 @@ tbody tr:hover {
 
     #sidebarToggle {
         display: inline-block;
+        position: relative;
+        z-index: 1001;
     }
 
     .date-role {
