@@ -44,27 +44,26 @@
         </section>
 
         <section id="overall-total">
-            <article><i class="fa-solid fa-calendar-day"></i><h3>Classes Today</h3><p>{{ classes_today|default(0) }}</p></article>
-            <article><i class="fa-solid fa-chart-column"></i><h3>Average Grade</h3><p>{{ average_grade|default('N/A') }}</p></article>
-            <article><i class="fa-solid fa-calendar-check"></i><h3>Attendance</h3><p>{{ attendance_rate|default('N/A') }}</p></article>
-            <article><i class="fa-solid fa-book-open"></i><h3>New Materials</h3><p>{{ new_materials|default(0) }}</p></article>
+            <article><i class="fa-solid fa-book"></i><h3>My Subjects</h3><p>{{ my_subject_count|default(0) }}</p></article>
+            <article><i class="fa-solid fa-chart-column"></i><h3>Average Grade</h3><p>{% if average_grade is not none %}{{ average_grade }} / 100{% else %}N/A{% endif %}</p></article>
+            <article><i class="fa-solid fa-calendar-check"></i><h3>Attendance Rate</h3><p>{% if attendance_rate is not none %}{{ attendance_rate }}%{% else %}N/A{% endif %}</p></article>
+            <article><i class="fa-solid fa-book-open"></i><h3>Learning Materials</h3><p>{{ new_materials|default(0) }}</p></article>
         </section>
 
         <section id="classes-overview" class="dashboard-card">
-            <h3><i class="fa-solid fa-calendar-days"></i> My Schedule</h3>
+            <h3><i class="fa-solid fa-calendar-days"></i> My Program and Subjects</h3>
+            <p class="program-summary"><strong>Program:</strong> {{ student_program.name if student_program and student_program.name else 'Not assigned yet' }}</p>
             <div class="table-container">
                 <table>
-                    <thead><tr><th>Subject</th><th>Section</th><th>Day</th><th>Time</th></tr></thead>
+                    <thead><tr><th>Subject</th><th>Teacher</th></tr></thead>
                     <tbody>
-                        {% for item in student_schedule|default([]) %}
+                        {% for item in student_subjects|default([]) %}
                         <tr>
                             <td>{{ item.subject }}</td>
-                            <td>{{ item.section }}</td>
-                            <td>{{ item.day }}</td>
-                            <td>{{ item.period_time }}</td>
+                            <td>{{ item.lastname ~ ', ' ~ item.firstname if item.firstname else 'Not assigned' }}</td>
                         </tr>
                         {% else %}
-                        <tr><td colspan="4">No schedule available.</td></tr>
+                        <tr><td colspan="2">No subjects are assigned to your program yet.</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -75,12 +74,12 @@
             <h3><i class="fa-solid fa-graduation-cap"></i> My Grades</h3>
             <div class="table-container">
                 <table>
-                    <thead><tr><th>Subject</th><th>Grade</th></tr></thead>
+                    <thead><tr><th>Subject</th><th>Assessment</th><th>Grade</th></tr></thead>
                     <tbody>
                         {% for grade in student_grades|default([]) %}
-                        <tr><td>{{ grade.subject }}</td><td>{{ grade.grade }}</td></tr>
+                        <tr><td>{{ grade.subject }}</td><td>{{ grade.assessment }}</td><td>{{ grade.grade }}</td></tr>
                         {% else %}
-                        <tr><td colspan="2">No grades available.</td></tr>
+                        <tr><td colspan="3">No grades available.</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -107,12 +106,12 @@
             <h3><i class="fa-solid fa-book-open"></i> Learning Materials</h3>
             <div class="table-container">
                 <table>
-                    <thead><tr><th>Title</th><th>Subject</th><th>Description</th></tr></thead>
+                    <thead><tr><th>Title</th><th>Subject</th><th>Description</th><th>Date</th></tr></thead>
                     <tbody>
                         {% for material in learning_materials|default([]) %}
-                        <tr><td>{{ material.title }}</td><td>{{ material.subject }}</td><td>{{ material.description }}</td></tr>
+                        <tr><td>{{ material.title }}</td><td>{{ material.subject }}</td><td>{{ material.description }}</td><td>{{ material.lesson_date }}</td></tr>
                         {% else %}
-                        <tr><td colspan="3">No learning materials available.</td></tr>
+                        <tr><td colspan="4">No learning materials available yet.</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>

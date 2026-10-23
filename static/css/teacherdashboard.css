@@ -366,6 +366,7 @@ a:focus-visible {
 }
 
 .feature-form input,
+.feature-form select,
 .feature-form textarea {
     display: block;
     width: 100%;
@@ -381,6 +382,7 @@ a:focus-visible {
 }
 
 .feature-form input:focus,
+.feature-form select:focus,
 .feature-form textarea:focus {
     outline: 2px solid #d9a441;
     border-color: #4B2112;

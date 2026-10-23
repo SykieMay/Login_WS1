@@ -11,3 +11,11 @@ sidebarToggle.addEventListener("click", function () {
 closeNav.addEventListener("click", function () {
     dashboard.classList.remove("sidebar-open");
 });
+
+document.querySelectorAll('.toggle-form').forEach(form => {
+    form.addEventListener('submit', event => {
+        if (!confirm(`${form.dataset.action} this user?`)) {
+            event.preventDefault();
+        }
+    });
+});

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="static/css/admindashboard.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admindashboard.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
@@ -17,7 +17,7 @@
             <div class="profile">
                 <img src="static\img\logo.webpg" alt="School logo">
                 <h3>{{user.lastname}}, {{user.firstname}}</h3>
-                <p>Administrator</p>
+                <p>Admin</p>
             </div>
         </section>
         <section class="navbar">
@@ -37,7 +37,7 @@
                 Today is:
                 <time id="autodate"></time>
             </p>    
-            <h2>Administrator</h2>
+            <h2>Admin</h2>
         </section>
         <div id="welcome">
             <h2>Welcome, {{user.firstname}}!</h2>
@@ -57,7 +57,7 @@
 
             <section>
                 <i class="fas fa-book-open"></i>
-                <p>Active Courses</p>
+                <p>Subjects</p>
                 <strong>{{ total_courses|default(0) }}</strong>
             </section>
         </div>
@@ -79,13 +79,139 @@
               <input type="email" id="user-email" name="email" required>
               <label for="password">Password:</label>
               <input type="password" id="password" name="password" minlength="8" required>
-              <select id="user-type" name="role">
+              <label for="user-type">Role:</label>
+              <select id="user-type" name="role" required>
                   <option value="Student">Student</option>
                   <option value="Teacher">Teacher</option>
               </select>
+              <label for="user-program">Program:</label>
+              <select id="user-program" name="program_id" required>
+                  <option value="">Choose a program</option>
+                  {% for program in programs %}
+                  <option value="{{ program.id }}">{{ program.name }}</option>
+                  {% endfor %}
+              </select>
               <button type="submit">Add User</button>
           </form>
+
+          <h3 class="table-title">All Users</h3>
+          <div class="table-wrap">
+              <table id="user-table">
+                  <thead class="user-table">
+                      <tr>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Role</th>
+                          <th>Program</th>
+                          <th>Status</th>
+                          <th>Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% for u in users %}
+                      <tr class="{{ '' if u.is_active else 'disabled-row' }}">
+                          <td>{{ u.lastname }}, {{ u.firstname }} {{ u.middlename or '' }}</td>
+                          <td>{{ u.email }}</td>
+                          <td>{{ u.role }}</td>
+                          <td>
+                              {% if u.role in ('Student', 'Teacher') %}
+                              <form action="{{ url_for('assign_program', user_id=u.id) }}" method="POST" class="inline-form">
+                                  <select name="program_id" aria-label="Program for {{ u.firstname }} {{ u.lastname }}">
+                                      <option value="">Unassigned</option>
+                                      {% for program in programs %}
+                                      <option value="{{ program.id }}" {{ 'selected' if u.program_id == program.id else '' }}>{{ program.name }}</option>
+                                      {% endfor %}
+                                  </select>
+                                  <button type="submit" class="small-button">Save</button>
+                              </form>
+                              {% else %}&mdash;{% endif %}
+                          </td>
+                          <td>
+                              <span class="status {{ 'active' if u.is_active else 'inactive' }}">
+                                  {{ 'Active' if u.is_active else 'Disabled' }}
+                              </span>
+                          </td>
+                          <td>
+                              {% if u.id != user.id %}
+                              <form action="/toggleuser/{{ u.id }}" method="POST"
+                                    class="toggle-form"
+                                    data-action="{{ 'Disable' if u.is_active else 'Enable' }}">
+                                  <button type="submit"
+                                          class="toggle-btn {{ 'btn-disable' if u.is_active else 'btn-enable' }}">
+                                      {{ 'Disable' if u.is_active else 'Enable' }}
+                                  </button>
+                              </form>
+                              {% else %}
+                              <em>You</em>
+                              {% endif %}
+                          </td>
+                      </tr>
+                      {% else %}
+                      <tr><td colspan="6">No users found.</td></tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+          </div>
         </div>
+        <section id="academic-setup">
+            <h3>Programs and Subjects</h3>
+            <div class="management-forms">
+                <form action="{{ url_for('add_program') }}" method="POST" class="management-form">
+                    <h4>Add Program</h4>
+                    <label for="program-name">Program name</label>
+                    <input type="text" id="program-name" name="name" maxlength="120" placeholder="e.g. Bachelor of Science in IT" required>
+                    <button type="submit">Add Program</button>
+                </form>
+                <form action="{{ url_for('add_subject') }}" method="POST" class="management-form">
+                    <h4>Add Subject and Assign Teacher</h4>
+                    <label for="subject-name">Subject name</label>
+                    <input type="text" id="subject-name" name="name" maxlength="120" placeholder="e.g. Database Management" required>
+                    <label for="subject-program">Program</label>
+                    <select id="subject-program" name="program_id" required>
+                        <option value="">Choose a program</option>
+                        {% for program in programs %}
+                        <option value="{{ program.id }}">{{ program.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="subject-teacher">Teacher</label>
+                    <select id="subject-teacher" name="teacher_id" required>
+                        <option value="">Choose an active teacher</option>
+                        {% for teacher in teachers %}
+                        <option value="{{ teacher.id }}" data-program-id="{{ teacher.program_id or '' }}">{{ teacher.lastname }}, {{ teacher.firstname }}{% if teacher.program_name %} &mdash; {{ teacher.program_name }}{% else %} (assign a program first){% endif %}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Add Subject</button>
+                </form>
+            </div>
+            <h4 class="table-title">Subjects and Assigned Teachers</h4>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Program</th><th>Subject</th><th>Teacher</th><th>Update Teacher</th></tr></thead>
+                    <tbody>
+                        {% for subject in subjects %}
+                        <tr>
+                            <td>{{ subject.program_name }}</td>
+                            <td>{{ subject.name }}</td>
+                            <td>{{ subject.teacher_name or 'Unassigned' }}</td>
+                            <td>
+                                <form action="{{ url_for('assign_subject_teacher', subject_id=subject.id) }}" method="POST" class="inline-form subject-teacher-form" data-program-id="{{ subject.program_id }}">
+                                    <select name="teacher_id" aria-label="Teacher for {{ subject.name }}" required>
+                                        <option value="">Choose teacher</option>
+                                        {% for teacher in teachers %}
+                                        <option value="{{ teacher.id }}" data-program-id="{{ teacher.program_id or '' }}" {{ 'selected' if subject.teacher_id == teacher.id else '' }}>{{ teacher.lastname }}, {{ teacher.firstname }}{% if teacher.program_name %} &mdash; {{ teacher.program_name }}{% else %} (assign a program first){% endif %}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="small-button">Save</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="4">No subjects have been added yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
         <div id="audit-logs">
             <h3>Audit Logs</h3>
             <table>

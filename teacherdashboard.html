@@ -59,47 +59,44 @@
 
             <section>
                 <i class="fa-solid fa-calendar-day"></i>
-                <h3>Classes Today</h3>
-                <p>{{ classes_today|default(0) }}</p>
+                <h3>Assigned Subjects</h3>
+                <p>{{ assigned_subjects|default(0) }}</p>
             </section>
 
             <section>
-                <i class="fa-solid fa-user-xmark"></i>
-                <h3>Absent Today</h3>
-                <p>{{ absent_today|default(0) }}</p>
+                <i class="fa-solid fa-calendar-check"></i>
+                <h3>Attendance Today</h3>
+                <p>{{ attendance_today|default(0) }}</p>
+                <small>{{ absent_today|default(0) }} absent</small>
             </section>
 
             <section>
                 <i class="fa-solid fa-clipboard-check"></i>
-                <h3>Assignments to Grade</h3>
-                <p>{{ assignments_to_grade|default(0) }}</p>
+                <h3>Grades Recorded</h3>
+                <p>{{ grades_recorded|default(0) }}</p>
             </section>
         </section>
 
         <section id="class-overview">
             <div class="schedule">
-                <h3><i class="fa-solid fa-calendar-days"></i> My Schedule</h3>
+                <h3><i class="fa-solid fa-calendar-days"></i> My Subjects</h3>
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
                                 <th>Subject</th>
-                                <th>Section</th>
-                                <th>Day</th>
-                                <th>Time</th>
+                                <th>Program</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for item in teacher_schedule|default([]) %}
+                            {% for item in teacher_subjects|default([]) %}
                             <tr>
-                                <td>{{ item.subject }}</td>
-                                <td>{{ item.section }}</td>
-                                <td>{{ item.day }}</td>
-                                <td>{{ item.period_time }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.program_name }}</td>
                             </tr>
                             {% else %}
                             <tr>
-                                <td colspan="4">No schedule available.</td>
+                                <td colspan="2">No subjects assigned yet.</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -121,7 +118,7 @@
                             {% for student in teacher_students|default([]) %}
                             <tr>
                                 <td>{{ student.lastname }}, {{ student.firstname }}</td>
-                                <td>{{ student.section }}</td>
+                                <td>{{ student.program_name }}</td>
                             </tr>
                             {% else %}
                             <tr>
@@ -136,6 +133,36 @@
 
         <section id="Attendance">
             <h3><i class="fa-solid fa-calendar-check"></i> Attendance</h3>
+            <button type="button" class="add-button" onclick="toggleForm('attendance-form')" {% if not teacher_students or not teacher_subjects %}disabled{% endif %}>
+                <i class="fa-solid fa-plus"></i> Record Attendance
+            </button>
+            <form id="attendance-form" class="feature-form" action="{{ url_for('record_attendance') }}" method="POST" hidden>
+                <label for="attendance-student">Student</label>
+                <select id="attendance-student" name="student_id" required {% if not teacher_students or not teacher_subjects %}disabled{% endif %}>
+                    <option value="">Choose a student</option>
+                    {% for student in teacher_students %}
+                    <option value="{{ student.id }}">{{ student.lastname }}, {{ student.firstname }} &mdash; {{ student.program_name }}</option>
+                    {% endfor %}
+                </select>
+                <label for="attendance-subject">Subject</label>
+                <select id="attendance-subject" name="subject_id" required {% if not teacher_students or not teacher_subjects %}disabled{% endif %}>
+                    <option value="">Choose a subject</option>
+                    {% for subject in teacher_subjects %}
+                    <option value="{{ subject.id }}">{{ subject.name }} &mdash; {{ subject.program_name }}</option>
+                    {% endfor %}
+                </select>
+                <label for="attendance-date">Date</label>
+                <input type="date" id="attendance-date" name="attendance_date" value="{{ today_date }}" required>
+                <label for="attendance-status">Status</label>
+                <select id="attendance-status" name="status" required>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                    <option value="Late">Late</option>
+                    <option value="Excused">Excused</option>
+                </select>
+                <button type="submit" class="add-button" {% if not teacher_students or not teacher_subjects %}disabled{% endif %}>Save Attendance</button>
+                {% if not teacher_students or not teacher_subjects %}<p class="empty-message">An administrator must assign a subject and students to your program first.</p>{% endif %}
+            </form>
             <div class="table-container">
                 <table>
                     <thead>
@@ -166,12 +193,38 @@
 
         <section id="gradebook">
             <h3><i class="fa-solid fa-book"></i> Gradebook</h3>
+            <button type="button" class="add-button" onclick="toggleForm('grade-form')" {% if not teacher_students or not teacher_subjects %}disabled{% endif %}>
+                <i class="fa-solid fa-plus"></i> Add or Update Grade
+            </button>
+            <form id="grade-form" class="feature-form" action="{{ url_for('save_grade') }}" method="POST" hidden>
+                <label for="grade-student">Student</label>
+                <select id="grade-student" name="student_id" required {% if not teacher_students or not teacher_subjects %}disabled{% endif %}>
+                    <option value="">Choose a student</option>
+                    {% for student in teacher_students %}
+                    <option value="{{ student.id }}">{{ student.lastname }}, {{ student.firstname }} &mdash; {{ student.program_name }}</option>
+                    {% endfor %}
+                </select>
+                <label for="grade-subject">Subject</label>
+                <select id="grade-subject" name="subject_id" required {% if not teacher_students or not teacher_subjects %}disabled{% endif %}>
+                    <option value="">Choose a subject</option>
+                    {% for subject in teacher_subjects %}
+                    <option value="{{ subject.id }}">{{ subject.name }} &mdash; {{ subject.program_name }}</option>
+                    {% endfor %}
+                </select>
+                <label for="grade-assessment">Assessment</label>
+                <input type="text" id="grade-assessment" name="assessment" maxlength="120" placeholder="e.g. Midterm Exam" required>
+                <label for="grade-score">Grade (0&ndash;100)</label>
+                <input type="number" id="grade-score" name="grade" min="0" max="100" step="0.01" required>
+                <button type="submit" class="add-button" {% if not teacher_students or not teacher_subjects %}disabled{% endif %}>Save Grade</button>
+                {% if not teacher_students or not teacher_subjects %}<p class="empty-message">An administrator must assign a subject and students to your program first.</p>{% endif %}
+            </form>
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
                             <th>Student Name</th>
                             <th>Subject</th>
+                            <th>Assessment</th>
                             <th>Grade</th>
                         </tr>
                     </thead>
@@ -180,11 +233,12 @@
                         <tr>
                             <td>{{ grade.lastname }}, {{ grade.firstname }}</td>
                             <td>{{ grade.subject }}</td>
+                            <td>{{ grade.assessment }}</td>
                             <td>{{ grade.grade }}</td>
                         </tr>
                         {% else %}
                         <tr>
-                            <td colspan="3">No grades available.</td>
+                            <td colspan="4">No grades available.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -204,7 +258,12 @@
                 <input type="text" id="assignment-title" name="title" required>
 
                 <label for="assignment-subject">Subject</label>
-                <input type="text" id="assignment-subject" name="subject" required>
+                <select id="assignment-subject" name="subject_id" required {% if not teacher_subjects %}disabled{% endif %}>
+                    <option value="">Choose an assigned subject</option>
+                    {% for subject in teacher_subjects %}
+                    <option value="{{ subject.id }}">{{ subject.name }} — {{ subject.program_name }}</option>
+                    {% endfor %}
+                </select>
 
                 <label for="assignment-description">Instructions</label>
                 <textarea id="assignment-description" name="description" rows="4" required></textarea>
@@ -212,7 +271,8 @@
                 <label for="assignment-due-date">Due Date</label>
                 <input type="date" id="assignment-due-date" name="due_date" required>
 
-                <button type="submit" class="add-button">Save Assignment</button>
+                <button type="submit" class="add-button" {% if not teacher_subjects %}disabled{% endif %}>Save Assignment</button>
+                {% if not teacher_subjects %}<p class="empty-message">Ask the administrator to assign a subject to your account.</p>{% endif %}
                 <button type="button" class="cancel-button" onclick="toggleForm('assignment-form')">Cancel</button>
             </form>
 
@@ -253,7 +313,12 @@
 
             <form id="lesson-plan-form" class="feature-form" action="{{ url_for('add_lesson_plan') }}" method="POST" hidden>
                 <label for="lesson-subject">Subject</label>
-                <input type="text" id="lesson-subject" name="subject" required>
+                <select id="lesson-subject" name="subject_id" required {% if not teacher_subjects %}disabled{% endif %}>
+                    <option value="">Choose an assigned subject</option>
+                    {% for subject in teacher_subjects %}
+                    <option value="{{ subject.id }}">{{ subject.name }} — {{ subject.program_name }}</option>
+                    {% endfor %}
+                </select>
 
                 <label for="lesson-title">Lesson Title</label>
                 <input type="text" id="lesson-title" name="title" required>
@@ -267,7 +332,8 @@
                 <label for="lesson-date">Lesson Date</label>
                 <input type="date" id="lesson-date" name="lesson_date" required>
 
-                <button type="submit" class="add-button">Save Lesson Plan</button>
+                <button type="submit" class="add-button" {% if not teacher_subjects %}disabled{% endif %}>Save Lesson Plan</button>
+                {% if not teacher_subjects %}<p class="empty-message">Ask the administrator to assign a subject to your account.</p>{% endif %}
                 <button type="button" class="cancel-button" onclick="toggleForm('lesson-plan-form')">Cancel</button>
             </form>
 
